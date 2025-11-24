@@ -1,4 +1,6 @@
 [core]
     remote = github
+[cache]
+    dir = /home/patn/itu-sdse-project/notebooks/.dvc/cache
 ['remote "github"']
     url = https://github.com/Jeppe-T-K/itu-sdse-project-data
