@@ -1,3 +1,9 @@
+import pandas as pd
+import time
+from mlflow.tracking.client import MlflowClient
+from mlflow.entities.model_registry.model_version_status import ModelVersionStatus
+from mlflow.tracking.client import MlflowClient
+
 def describe_numeric_col(x):
     """
     Parameters:
@@ -28,10 +34,6 @@ def create_dummy_cols(df, col):
     new_df = new_df.drop(col, axis=1)
     return new_df
 
-import time
-from mlflow.tracking.client import MlflowClient
-from mlflow.entities.model_registry.model_version_status import ModelVersionStatus
-from mlflow.tracking.client import MlflowClient
 
 def wait_until_ready(model_name, model_version):
     client = MlflowClient()

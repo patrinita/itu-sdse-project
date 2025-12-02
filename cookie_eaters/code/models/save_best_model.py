@@ -1,4 +1,3 @@
-
 #save the best model
 xgboost_model = model_grid.best_estimator_
 xgboost_model_path = "./artifacts/lead_model_xgboost.json"

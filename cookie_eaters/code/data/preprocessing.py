@@ -1,6 +1,8 @@
 import numpy as np
 import pandas as pd
-
+from pprint import pprint
+from sklearn.preprocessing import MinMaxScaler
+import joblib
 
 #replacing values 
 data["lead_indicator"].replace("", np.nan, inplace=True)
@@ -28,7 +30,7 @@ for col in vars:
     print(f"Changed {col} to object type")
 
 
-# Continuous variables missing values
+# Continuous annd categorical variables missing values
 cont_vars = data.loc[:, ((data.dtypes=="float64")|(data.dtypes=="int64"))]
 cat_vars = data.loc[:, (data.dtypes=="object")]
 
@@ -50,7 +52,7 @@ cat_missing_impute.to_csv("./artifacts/cat_missing_impute.csv")
 cat_missing_impute
 
 
-# Continuous variables missing values
+# Continuous and categorical variables missing values
 cont_vars = cont_vars.apply(impute_missing_values)
 cont_vars.apply(describe_numeric_col).T
 
@@ -60,9 +62,6 @@ cat_vars.apply(lambda x: pd.Series([x.count(), x.isnull().sum()], index = ['Coun
 cat_vars
 
 #data standardization
-from sklearn.preprocessing import MinMaxScaler
-import joblib
-
 scaler_path = "./artifacts/scaler.pkl"
 
 scaler = MinMaxScaler()
@@ -80,14 +79,6 @@ cat_vars = cat_vars.reset_index(drop=True)
 data = pd.concat([cat_vars, cont_vars], axis=1)
 print(f"Data cleansed and combined.\nRows: {len(data)}")
 data
-
-
-
-
-
-
-
-
 
 
 #seperating continous and categorical columnns to find outliers

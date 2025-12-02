@@ -1,6 +1,8 @@
-!dvc pull
-
+import subprocess
+from IPython.display import display
 import pandas as pd
+
+subprocess.run(["dvc", "pull"])
 
 print("Loading training data")
 

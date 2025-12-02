@@ -1,6 +1,6 @@
-#production model
 from mlflow.tracking import MlflowClient
 
+#production model
 client = MlflowClient()
 prod_model = [model for model in client.search_model_versions(f"name='{model_name}'") if dict(model)['current_stage']=='Production']
 prod_model_exists = len(prod_model)>0

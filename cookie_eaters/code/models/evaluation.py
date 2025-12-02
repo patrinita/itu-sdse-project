@@ -1,6 +1,11 @@
-#test accuracy
+from pprint import pprint
 from sklearn.metrics import accuracy_score
+from sklearn.metrics import confusion_matrix
+from sklearn.metrics import classification_report
+import json
 
+
+#test accuracy
 best_model_xgboost_params = model_grid.best_params_
 print("Best xgboost params")
 pprint(best_model_xgboost_params)
@@ -11,8 +16,7 @@ print("Accuracy train", accuracy_score(y_pred_train, y_train ))
 print("Accuracy test", accuracy_score(y_pred_test, y_test))
 
 #performance overview
-from sklearn.metrics import confusion_matrix
-from sklearn.metrics import classification_report
+
 
 conf_matrix = confusion_matrix(y_test, y_pred_test)
 print("Test actual/predicted\n")
