@@ -1,6 +1,12 @@
 import pandas as pd
 from sklearn.model_selection import train_test_split
 
+def create_dummy_cols(df, col):
+    df_dummies = pd.get_dummies(df[col], prefix=col, drop_first=True)
+    new_df = pd.concat([df, df_dummies], axis=1)
+    new_df = new_df.drop(col, axis=1)
+    return new_df
+
 data = pd.read_csv(data_gold_path)
 print(f"Training data length: {len(data)}")
 data.head(5)

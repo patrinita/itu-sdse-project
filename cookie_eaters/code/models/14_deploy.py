@@ -1,9 +1,9 @@
 import time
 from mlflow.tracking import MlflowClient
-client = MlflowClient()
 
 model_version = 1
 
+client = MlflowClient()
 
 def wait_for_deployment(model_name, model_version, stage='Staging'):
     status = False

@@ -3,6 +3,7 @@ import pandas as pd
 from pprint import pprint
 from sklearn.preprocessing import MinMaxScaler
 import joblib
+import json
 
 #replacing values 
 data["lead_indicator"].replace("", np.nan, inplace=True)
@@ -38,6 +39,7 @@ print("\nContinuous columns: \n")
 pprint(list(cont_vars.columns), indent=4)
 print("\n Categorical columns: \n")
 pprint(list(cat_vars.columns), indent=4)
+
 
 #handling outliers
 cont_vars = cont_vars.apply(lambda x: x.clip(lower = (x.mean()-2*x.std()),
@@ -80,16 +82,13 @@ data = pd.concat([cat_vars, cont_vars], axis=1)
 print(f"Data cleansed and combined.\nRows: {len(data)}")
 data
 
+data_columns = list(data.columns)
+with open('./artifacts/columns_drift.json','w+') as f:           
+    json.dump(data_columns,f)
+    
+data.to_csv('./artifacts/training_data.csv', index=False)
 
-#seperating continous and categorical columnns to find outliers
 
-cont_vars = data.loc[:, ((data.dtypes=="float64")|(data.dtypes=="int64"))]
-cat_vars = data.loc[:, (data.dtypes=="object")]
-
-print("\nContinuous columns: \n")
-pprint(list(cont_vars.columns), indent=4)
-print("\n Categorical columns: \n")
-pprint(list(cat_vars.columns), indent=4)
 
 
 

@@ -16,8 +16,6 @@ print("Accuracy train", accuracy_score(y_pred_train, y_train ))
 print("Accuracy test", accuracy_score(y_pred_test, y_test))
 
 #performance overview
-
-
 conf_matrix = confusion_matrix(y_test, y_pred_test)
 print("Test actual/predicted\n")
 print(pd.crosstab(y_test, y_pred_test, rownames=['Actual'], colnames=['Predicted'], margins=True),'\n')
@@ -30,15 +28,12 @@ print(pd.crosstab(y_train, y_pred_train, rownames=['Actual'], colnames=['Predict
 print("Classification report\n")
 print(classification_report(y_train, y_pred_train),'\n')
 
-#save the model result
-column_list_path = './artifacts/columns_list.json'
-with open(column_list_path, 'w+') as columns_file:
-    columns = {'column_names': list(X_train.columns)}
-    pprint(columns)
-    json.dump(columns, columns_file)
+#save the best model
 
-print('Saved column list to ', column_list_path)
+xgboost_model = model_grid.best_estimator_
+xgboost_model_path = "./artifacts/lead_model_xgboost.json"
+xgboost_model.save_model(xgboost_model_path)
 
-model_results_path = "./artifacts/model_results.json"
-with open(model_results_path, 'w+') as results_file:
-    json.dump(model_results, results_file)
+model_results = {
+    xgboost_model_path: classification_report(y_train, y_pred_train, output_dict=True)
+}
