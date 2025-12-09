@@ -22,31 +22,31 @@ func Pipeline(ctx context.Context) error {
 		WithWorkdir("/app")
 
 	// Mount your local Python project
-	python = python.WithDirectory("/app", client.Host().Directory("./cookie_eaters/code"))
+	python = python.WithDirectory("/app", client.Host().Directory("../cookie_eaters"))
 
 	// Install dependencies if you use requirements
 	python = python.WithExec([]string{"pip", "install", "-r", "requirements.txt"})
 
 	// Define pipeline Python scripts
 	steps := []string{
-		"01_setup_data.py",
-		"02_helper_functions.py",
-		"03_preprocessing.py",
-		"04_feature_engineering.py",
-		"05_setup_experiment.py",
-		"06_load_train_data.py",
-		"07_model_train.py",
-		"08_evaluation.py",
-		"09_Sklearning_logostoc_regress.py", // adjust actual filename
-		"10_save_model.py",
-		"11_mlflow_experiment.py",
-		"12_production_model.py",
-		"13_compare_register.py",
-		"14_deploy.py",
+		"./code/data/01_setup_data.py",
+		"./code/data/02_helper_functions.py",
+		"./code/data/03_preprocessing.py",
+		"./code/features/04_feature_engineering.py",
+		"./code/models/05_setup_experiment.py",
+		"./code/models/06_load_train_data.py",
+		"./code/models/07_model_train.py",
+		"./code/models/08_evaluation.py",
+		"./code/models/09_Sklearin_logistic_regression.py",
+		"./code/models/10_save_model.py",
+		"./code/models/11_mlflow_experiment.py",
+		"./code/models/12_production_model.py",
+		"./code/models/13_compare_register.py",
+		"./code/models/14_deploy.py",
 	}
 
 	for _, step := range steps {
-		fmt.Println("▶ Running:", step)
+		fmt.Println("Running:", step)
 		python = python.WithExec([]string{"python", step})
 	}
 
