@@ -2,7 +2,6 @@ import pandas as pd
 import time
 from mlflow.tracking.client import MlflowClient
 from mlflow.entities.model_registry.model_version_status import ModelVersionStatus
-from mlflow.tracking.client import MlflowClient
 
 def describe_numeric_col(x):
     """
@@ -29,6 +28,9 @@ def impute_missing_values(x, method="mean"):
     return x
 
 def create_dummy_cols(df, col):
+    """
+    Converts a categorical column into dummy variables and appends them to the dataframe.
+    """
     df_dummies = pd.get_dummies(df[col], prefix=col, drop_first=True)
     new_df = pd.concat([df, df_dummies], axis=1)
     new_df = new_df.drop(col, axis=1)
