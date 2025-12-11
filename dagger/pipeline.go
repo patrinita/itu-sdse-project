@@ -29,20 +29,20 @@ func Pipeline(ctx context.Context) error {
 
 	// Define pipeline Python scripts
 	steps := []string{
-		"./code/data/01_setup_data.py",
-		"./code/data/02_helper_functions.py",
-		"./code/data/03_preprocessing.py",
-		"./code/features/04_feature_engineering.py",
-		"./code/models/05_setup_experiment.py",
-		"./code/models/06_load_train_data.py",
-		"./code/models/07_model_train.py",
-		"./code/models/08_evaluation.py",
-		"./code/models/09_Sklearin_logistic_regression.py",
-		"./code/models/10_save_model.py",
-		"./code/models/11_mlflow_experiment.py",
-		"./code/models/12_production_model.py",
-		"./code/models/13_compare_register.py",
-		"./code/models/14_deploy.py",
+		"./code/data/A_helper_functions.py",
+		"./code/data/B_setup_data.py",
+		"./code/data/C_preprocessing.py",
+		"./code/features/D_feature_engineering.py",
+		"./code/models/E_setup_experiment.py",
+		"./code/models/F_load_train_data.py",
+		"./code/models/G_model_selection.py",
+		"./code/models/H_evaluation.py",
+		"./code/models/I_model_training.py",
+		"./code/models/J_save_artifacts.py",
+		"./code/models/K_mlflow_model_selection.py",
+		"./code/models/L_check_production_model.py",
+		"./code/models/M_compare_and_register.py",
+		"./code/models/N_model_staging.py",
 	}
 
 	for _, step := range steps {

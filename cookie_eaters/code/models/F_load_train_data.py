@@ -1,5 +1,6 @@
 import pandas as pd
 from sklearn.model_selection import train_test_split
+from E_setup_experiment import data_gold_path
 
 def create_dummy_cols(df, col):
     df_dummies = pd.get_dummies(df[col], prefix=col, drop_first=True)
