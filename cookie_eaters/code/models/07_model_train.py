@@ -3,7 +3,9 @@ from sklearn.model_selection import RandomizedSearchCV
 from scipy.stats import uniform
 from scipy.stats import randint
 
+def build_model_grid(): #added this
 model = XGBRFClassifier(random_state=42)
+
 params = {
     "learning_rate": uniform(1e-2, 3e-1),
     "min_split_loss": uniform(0, 10),
@@ -15,14 +17,11 @@ params = {
 
 model_grid = RandomizedSearchCV(model, param_distributions=params, n_jobs=-1, verbose=3, n_iter=10, cv=10)
 
-model_grid.fit(X_train, y_train)
+return model_grid #added this and the code below
 
+def main():
+    model_grid = build_model_grid()
+    model_grid.fit(X_train, y_train) #didnt add this
 
-
-
-
-
-
-
-
-
+if __name__ == "__main__":
+    main()
