@@ -1,23 +1,40 @@
+import pandas as pd
 
+def feature_engineering(data, artifacts_path="./artifacts"):
+    """
+    Performs feature engineering on the input DataFrame.
+    """
+    
+    #removing irrelevant columns from the dataframe
+    data = data.drop(
+        [
+            "is_active", "marketing_consent", "first_booking", "existing_customer", "last_seen", "domain", "country", "visited_learn_more_before_booking", "visited_faq"
+        ],
+        axis=1
+    )
 
+    #Group source values into broader categories
 
-#removing irrelevant columns from the dataframe
-data = data.drop(
-    [
-        "is_active", "marketing_consent", "first_booking", "existing_customer", "last_seen", "domain", "country", "visited_learn_more_before_booking", "visited_faq"
-    ],
-    axis=1
-)
+    data['bin_source'] = data['source']
+    values_list = ['li', 'organic','signup','fb']
+    data.loc[~data['source'].isin(values_list),'bin_source'] = 'Others'
+    mapping = {'li' : 'socials', 
+            'fb' : 'socials', 
+            'organic': 'group1', 
+            'signup': 'group1'
+            }
 
-#Group source values into broader categories
+    data['bin_source'] = data['source'].map(mapping)
 
-data['bin_source'] = data['source']
-values_list = ['li', 'organic','signup','fb']
-data.loc[~data['source'].isin(values_list),'bin_source'] = 'Others'
-mapping = {'li' : 'socials', 
-           'fb' : 'socials', 
-           'organic': 'group1', 
-           'signup': 'group1'
-           }
+    return data
 
-data['bin_source'] = data['source'].map(mapping)
+if __name__ == "__main__":
+    # Load data
+    train_data = pd.read_csv("./data/training_data.csv")
+
+    # Run feature engineering
+    engineered_data = feature_engineering(train_data)
+
+    # Save result
+    engineered_data.to_csv("./artifacts/feature_engineered_data.csv", index=False)
+    print("Feature engineering completed!")
