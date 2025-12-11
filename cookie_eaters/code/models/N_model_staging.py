@@ -19,14 +19,23 @@ def wait_for_deployment(model_name, model_version, stage='Staging'):
             time.sleep(2)
     return status
 
-model_version_details = dict(client.get_model_version(name=model_name,version=model_version))
-model_status = True
-if model_version_details['current_stage'] != 'Staging':
-    client.transition_model_version_stage(
-        name=model_name,
-        version=model_version,stage="Staging", 
-        archive_existing_versions=True
-    )
-    model_status = wait_for_deployment(model_name, model_version, 'Staging')
-else:
-    print('Model already in staging')
+def deploy_to_staging(model_name, model_version):#added
+    model_version_details = dict(client.get_model_version(name=model_name,version=model_version))
+    model_status = True
+    if model_version_details['current_stage'] != 'Staging':
+        client.transition_model_version_stage(
+            name=model_name,
+            version=model_version,stage="Staging", 
+            archive_existing_versions=True
+        )
+        model_status = wait_for_deployment(model_name, model_version, 'Staging')
+    else:
+        print('Model already in staging')
+    return model_status#added
+
+def main():#added all lines below
+    deploy_to_staging(model_name, model_version)
+
+
+if __name__ == "__main__":
+    main()
