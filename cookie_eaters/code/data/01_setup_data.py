@@ -9,7 +9,7 @@ from pprint import pprint
 
 def prepare_data_and_artifacts():
     """
-    Prepares directories, loads data, applies date filtering, 
+    Creates directories, loads data, applies date filtering, 
     and saves date limits for artifacts.
     """
     # Creates necessary directories
