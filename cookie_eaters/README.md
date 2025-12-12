@@ -6,6 +6,11 @@
 
 Aminna & Patricia eat cookies
 
+## Raw data: Do this before running the code
+Place the raw dataset at: cookie_eaters/raw/raw_data.csv
+This folder is gitignored and must be created locally.
+
+
 ## Project Organization
 
 ```
