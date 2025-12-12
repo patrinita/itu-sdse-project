@@ -1,10 +1,8 @@
 from xgboost import XGBRFClassifier
-from sklearn.model_selection import RandomizedSearchCV
+from sklearn.model_selection import RandomizedSearchCV, train_test_split
 from scipy.stats import uniform, randint
 import pandas as pd
-
-#specify this path...
-data_path = 
+from F_load_train_data import prepare_training_data
 
 
 def build_model_grid(): #added this
@@ -23,9 +21,9 @@ def build_model_grid(): #added this
 
     return model_grid #added this and the code below
 
-def main():
+def main(data):
     
-    data = pd.read_csv(data_path)
+    data = pd.read_csv("./artifacts/train_data_gold.csv")
     
     y = data["lead_indicator"]
     X = data.drop(["lead_indicator"], axis=1)
