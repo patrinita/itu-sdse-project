@@ -1,14 +1,32 @@
-# Cookie_Eaters
+# Cookie Eaters - MLOPs and Software Engineering Project
+
+# Amina Lykke Said & Patricia Nita
+
+**Repo: https://github.com/patrinita/itu-sdse-project**
+
+## Project overview
+This project implements an end-to-end ML pipeline with the goal to build a reproducible automated system that: takes raw_data as input, preprocesses and prepares it, trains and evaluates ML models, tracks experiments and metrics and stores and registers the model artifacts, so that reproducibility is ensured.
+
+## How to run the project
+Prerequisites:
+- Python 3.10+ (python dependencies: pip install -r requirements.txt)
+- Git
+- DVC
+- Docker (required for Dagger)
+- MLflow
+
+## Data setup: do this before running the code!
+The raw dataset is required to run the pipeline and was not committed to Git.
+
+The data file must be placed locally at: cookie_eaters/raw/raw_data.csv
+
+This folder is gitignored and must be created locally.
 
 <a target="_blank" href="https://cookiecutter-data-science.drivendata.org/">
     <img src="https://img.shields.io/badge/CCDS-Project%20template-328F97?logo=cookiecutter" />
 </a>
 
-Aminna & Patricia eat cookies
-
-## Raw data: Do this before running the code
-Place the raw dataset at: cookie_eaters/raw/raw_data.csv
-This folder is gitignored and must be created locally.
+Aminna & Patricia eat cookies (yammy)
 
 
 ## Project Organization
