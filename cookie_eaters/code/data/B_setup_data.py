@@ -4,7 +4,6 @@ import warnings
 import datetime
 import json
 import os
-from pprint import pprint
 
 def prepare_data_and_artifacts():
     """
