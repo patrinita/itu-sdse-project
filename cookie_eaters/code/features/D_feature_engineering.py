@@ -36,5 +36,5 @@ if __name__ == "__main__":
     engineered_data = feature_engineering(train_data)
 
     # Save result
-    engineered_data.to_csv("./artifacts/feature_engineered_data.csv", index=False)
-    print("Feature engineering completed!")
+    engineered_data.to_csv("./artifacts/train_data_gold.csv", index=False)
+    print("train data gold is created!")

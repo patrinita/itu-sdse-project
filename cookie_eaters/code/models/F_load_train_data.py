@@ -1,6 +1,6 @@
 import pandas as pd
 from E_setup_experiment import data_gold_path
-from data.A_helper_functions import create_dummy_cols
+from code.data.A_helper_functions import create_dummy_cols
 
 #should also be in a function:
 def prepare_training_data(data): 
@@ -9,7 +9,6 @@ def prepare_training_data(data):
 
     cat_cols = ["customer_group", "onboarding", "bin_source", "source"]
     cat_vars = data[cat_cols]
-
     other_vars = data.drop(cat_cols, axis=1)
 
 
@@ -31,10 +30,10 @@ def main():
     print(f"Training data length: {len(data)}")
     print(data.head(5))
 
-    # Prepare data
+    # Process data
     processed = prepare_training_data(data)
 
-    # Save for the next script (check if this is in the main!!!)
+    # writes the gold dataset
     processed.to_csv("./artifacts/train_data_gold.csv", index=False)
     print("Saved processed training data to ./artifacts/train_data_gold.csv")
 

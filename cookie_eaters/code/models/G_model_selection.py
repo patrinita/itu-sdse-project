@@ -2,8 +2,7 @@ from xgboost import XGBRFClassifier
 from sklearn.model_selection import RandomizedSearchCV, train_test_split
 from scipy.stats import uniform, randint
 import pandas as pd
-from F_load_train_data import prepare_training_data
-
+from code.models.F_load_train_data import prepare_training_data
 
 def build_model_grid(): #added this
     model = XGBRFClassifier(random_state=42)
@@ -21,7 +20,7 @@ def build_model_grid(): #added this
 
     return model_grid #added this and the code below
 
-def main(data):
+def main():
     
     data = pd.read_csv("./artifacts/train_data_gold.csv")
     
@@ -31,7 +30,8 @@ def main(data):
     X_train, X_test, y_train, y_test = train_test_split(
         X, y, random_state=42, test_size=0.15, stratify=y
     )
-    y_train
+    #added this to verify, but only printing the top
+    print(y_train.head())
 
     model_grid = build_model_grid()
     model_grid.fit(X_train, y_train) #didnt add this

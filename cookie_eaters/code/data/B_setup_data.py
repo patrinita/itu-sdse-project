@@ -4,7 +4,6 @@ import warnings
 import datetime
 import json
 import os
-import shutil
 from pprint import pprint
 
 def prepare_data_and_artifacts():
@@ -28,7 +27,8 @@ def prepare_data_and_artifacts():
 
     # Loads training data
     print("Loading training data")
-    data = pd.read_csv("../../raw/raw_data.csv")
+    data = pd.read_csv("raw/raw_data.csv")
+
     print("Total rows:", data.count())
     print(data.head(5))
 
