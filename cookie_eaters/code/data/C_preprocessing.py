@@ -97,7 +97,4 @@ if __name__ == "__main__":
     
     # Run preprocessing
     cleaned_data = clean_and_preprocess_data(raw_data)
-    
-    # Optionally save cleaned data (if not already saved in the function)
-    cleaned_data.to_csv("./artifacts/training_data.csv", index=False)
     print("Preprocessing completed!")
