@@ -35,9 +35,9 @@ def main():
     # Prepare data
     processed = prepare_training_data(data)
 
-    # Save for the next script
-    processed.to_csv("./artifacts/training_final.csv", index=False)
-    print("Saved processed training data to ./artifacts/training_final.csv")
+    # Save for the next script (check if this is in the main!!!)
+    processed.to_csv("./artifacts/train_data_gold.csv", index=False)
+    print("Saved processed training data to ./artifacts/train_data_gold.csv")
 
 if __name__ == "__main__":
     main()
