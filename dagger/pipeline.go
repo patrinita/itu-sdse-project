@@ -29,7 +29,6 @@ func Pipeline(ctx context.Context) error {
 
 	// Define pipeline Python scripts
 	steps := []string{
-		"./code/data/A_helper_functions.py",
 		"./code/data/B_setup_data.py",
 		"./code/data/C_preprocessing.py",
 		"./code/features/D_feature_engineering.py",

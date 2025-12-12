@@ -1,25 +1,40 @@
 from xgboost import XGBRFClassifier
 from sklearn.model_selection import RandomizedSearchCV
-from scipy.stats import uniform
-from scipy.stats import randint
+from scipy.stats import uniform, randint
+import pandas as pd
+
+#specify this path...
+data_path = 
+
 
 def build_model_grid(): #added this
-model = XGBRFClassifier(random_state=42)
+    model = XGBRFClassifier(random_state=42)
 
-params = {
-    "learning_rate": uniform(1e-2, 3e-1),
-    "min_split_loss": uniform(0, 10),
-    "max_depth": randint(3, 10),
-    "subsample": uniform(0, 1),
-    "objective": ["reg:squarederror", "binary:logistic", "reg:logistic"],
-    "eval_metric": ["aucpr", "error"]
-}
+    params = {
+        "learning_rate": uniform(1e-2, 3e-1),
+        "min_split_loss": uniform(0, 10),
+        "max_depth": randint(3, 10),
+        "subsample": uniform(0, 1),
+        "objective": ["reg:squarederror", "binary:logistic", "reg:logistic"],
+        "eval_metric": ["aucpr", "error"]
+    }
 
-model_grid = RandomizedSearchCV(model, param_distributions=params, n_jobs=-1, verbose=3, n_iter=10, cv=10)
+    model_grid = RandomizedSearchCV(model, param_distributions=params, n_jobs=-1, verbose=3, n_iter=10, cv=10)
 
-return model_grid #added this and the code below
+    return model_grid #added this and the code below
 
 def main():
+    
+    data = pd.read_csv(data_path)
+    
+    y = data["lead_indicator"]
+    X = data.drop(["lead_indicator"], axis=1)
+
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, random_state=42, test_size=0.15, stratify=y
+    )
+    y_train
+
     model_grid = build_model_grid()
     model_grid.fit(X_train, y_train) #didnt add this
 
