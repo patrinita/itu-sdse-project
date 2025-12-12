@@ -1,9 +1,7 @@
 import mlflow.pyfunc
-
 from sklearn.linear_model import LogisticRegression
 import os
 from sklearn.metrics import cohen_kappa_score, f1_score
-import matplotlib.pyplot as plt
 import joblib
 
 class lr_wrapper(mlflow.pyfunc.PythonModel):
