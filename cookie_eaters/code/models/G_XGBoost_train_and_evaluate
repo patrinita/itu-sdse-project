@@ -1,0 +1,114 @@
+from pprint import pprint
+import pandas as pd
+from xgboost import XGBRFClassifier
+from sklearn.model_selection import RandomizedSearchCV, train_test_split
+from sklearn.metrics import confusion_matrix, classification_report
+from scipy.stats import uniform, randint
+
+
+# Build model grid
+def build_model_grid():
+    model = XGBRFClassifier(random_state=42)
+    params = {
+        "learning_rate": uniform(1e-2, 3e-1),
+        "min_split_loss": uniform(0, 10),
+        "max_depth": randint(3, 10),
+        "subsample": uniform(0, 1),
+        "objective": ["reg:squarederror", "binary:logistic", "reg:logistic"],
+        "eval_metric": ["aucpr", "error"]
+    }
+
+    model_grid = RandomizedSearchCV(
+        model,
+        param_distributions=params,
+        n_jobs=-1,
+        verbose=3,
+        n_iter=10,
+        cv=10
+    )
+    return model_grid
+
+# Evaluate performance
+def performance(y_pred_test, y_pred_train, y_test, y_train):
+    # Test set
+    conf_matrix_test = confusion_matrix(y_test, y_pred_test)
+    print("Test actual/predicted\n")
+    test_crosstab = pd.crosstab(
+        y_test,
+        y_pred_test,
+        rownames=['Actual'],
+        colnames=['Predicted'],
+        margins=True
+    )
+    print(test_crosstab, '\n')
+    print("Classification report\n")
+    test_classification_report = classification_report(y_test, y_pred_test)
+    print(test_classification_report, '\n')
+
+    # Train set
+    conf_matrix_train = confusion_matrix(y_train, y_pred_train)
+    print("Train actual/predicted\n")
+    train_crosstab = pd.crosstab(
+        y_train,
+        y_pred_train,
+        rownames=['Actual'],
+        colnames=['Predicted'],
+        margins=True
+    )
+    print(train_crosstab, '\n')
+    print("Classification report\n")
+    train_classification_report = classification_report(y_train, y_pred_train)
+    print(train_classification_report, '\n')
+
+    return (
+        conf_matrix_test,
+        test_crosstab,
+        test_classification_report,
+        conf_matrix_train,
+        train_crosstab,
+        train_classification_report,
+    )
+
+# Save model
+def save_best_model_and_results(model_grid, y_train, y_pred_train):
+    xgboost_model = model_grid.best_estimator_
+    xgboost_model_path = "./artifacts/lead_model_xgboost.json"
+    xgboost_model.save_model(xgboost_model_path)
+    model_results = {
+        xgboost_model_path: classification_report(y_train, y_pred_train, output_dict=True)
+    }
+    return model_results
+
+
+def main():
+    # Load prepared training data
+    data = pd.read_csv("./artifacts/train_data_gold.csv")
+    y = data["lead_indicator"]
+    X = data.drop(["lead_indicator"], axis=1)
+
+    # Train/test split
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y,
+        test_size=0.15,
+        random_state=42,
+        stratify=y
+    )
+
+    print("Sample y_train:\n", y_train.head())
+
+    #Build and fit model
+    model_grid = build_model_grid()
+    model_grid.fit(X_train, y_train)
+
+    #Predictions
+    y_pred_train = model_grid.predict(X_train)
+    y_pred_test = model_grid.predict(X_test)
+
+    # Evaluate
+    performance(y_pred_test, y_pred_train, y_test, y_train)
+
+    # Save best model and results
+    save_best_model_and_results(model_grid, y_train, y_pred_train)
+
+if __name__ == "__main__":
+    main()
