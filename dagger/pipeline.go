@@ -34,14 +34,13 @@ func Pipeline(ctx context.Context) error {
 		"./code/features/D_feature_engineering.py",
 		"./code/models/E_setup_experiment.py",
 		"./code/models/F_load_train_data.py",
-		"./code/models/G_model_selection.py",
-		"./code/models/H_evaluation.py",
-		"./code/models/I_model_training.py",
-		"./code/models/J_save_artifacts.py",
-		"./code/models/K_mlflow_model_selection.py",
-		"./code/models/L_check_production_model.py",
-		"./code/models/M_compare_and_register.py",
-		"./code/models/N_model_staging.py",
+		"./code/model/G_XGBoost_train_annd_evaluate.py",
+		"./code/models/H_model_training.py",
+		"./code/models/I_save_artifacts.py",
+		"./code/models/J_mlflow_model_selection.py",
+		"./code/models/K_check_production_model.py",
+		"./code/models/L_compare_and_register.py",
+		"./code/models/M_model_staging.py",
 	}
 
 	for _, step := range steps {
