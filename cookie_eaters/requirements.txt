@@ -3,7 +3,7 @@ black
 flake8
 isort
 python-dotenv
--e .
+
 #runtime dependencies
 scikit-learn==1.5.2
 pandas==2.2.3
