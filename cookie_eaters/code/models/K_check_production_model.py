@@ -21,6 +21,8 @@ def evaluate_production_model(prod_model, model_name):
     
     else:
         print('No model in production')
+    
+    return prod_model_exists, prod_model_run_id, prod_model_version
 
 def main():#added all lines below
     prod_model = get_production_model(model_name)
