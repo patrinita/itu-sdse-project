@@ -55,13 +55,13 @@ def train_lr_with_mlflow(X_train, y_train, X_test, y_test, experiment_name):
         mlflow.log_artifacts("artifacts", artifact_path="model")
         mlflow.log_param("data_version", "00000")
 
-        joblib.dump(value=model, filename=lr_model_path)
+        joblib.dump(value=best_model, filename=lr_model_path)
 
         mlflow.pyfunc.log_model("model", python_model=lr_wrapper(best_model))
 
     return {
         "model_grid": model_grid,
-        "model": model,
+        "model": best_model,
         "y_pred_train": y_pred_train,
         "y_pred_test": y_pred_test,
         "model_path": lr_model_path,

@@ -1,26 +1,33 @@
-import json #added
-from pprint import pprint #added
+import json
+from pprint import pprint
 
-#save the model result
-def save_column_list(X_train, path):#added
-    with open(path, 'w+') as columns_file:
+
+def save_artifacts(X_train, model_results, column_list_path="./artifacts/columns_list.json", model_results_path="./artifacts/model_results.json"):
+   
+    """
+    Saves training column names and model results to disk.
+
+    Returns:
+        dict with paths to saved artifacts
+    """
+    
+    # Save column list
+    with open(column_list_path, 'w+') as columns_file:
         columns = {'column_names': list(X_train.columns)}
         pprint(columns)
         json.dump(columns, columns_file)
-    print('Saved column list to', path)
 
-def save_model_results(model_results, path):
-    with open(path, 'w+') as results_file:
+    print("Saved column list to", column_list_path)
+
+    # Save model results
+    with open(model_results_path, "w+") as results_file:
         json.dump(model_results, results_file)
-    print('Saved model results to', path)
 
-def main():
-    column_list_path = './artifacts/columns_list.json'
-    model_results_path = './artifacts/model_results.json'
+    print("Saved model results to", model_results_path)
 
-    save_column_list(X_train, column_list_path)
-    save_model_results(model_results, model_results_path)
-
-
-if __name__ == "__main__":
-    main()
+    return {
+        "columns_path": column_list_path,
+        "model_results_path": model_results_path,
+        "columns": columns,
+        "model_results": model_results,
+    }
