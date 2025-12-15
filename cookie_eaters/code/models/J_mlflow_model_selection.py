@@ -3,7 +3,6 @@ from mlflow.entities.model_registry.model_version_status import ModelVersionStat
 import datetime
 import mlflow
 import pandas as pd
-from code.data.A_helper_functions import wait_until_ready
 
 current_date = datetime.datetime.now().strftime("%Y_%B_%d")
 artifact_path = "model"
@@ -32,8 +31,6 @@ def get_best_model(path="./artifacts/model_results.json"):#added
 
 
 def main():#added all lines below:
-    model_version = "1"
-    wait_until_ready(model_name, model_version)
 
     experiment_best = get_best_experiment(experiment_name)
     print(f"Best experiment: {experiment_best}")
