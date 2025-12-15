@@ -34,6 +34,7 @@ def deploy_to_staging(model_name, model_version):#added
     return model_status#added
 
 def main():#added all lines below
+    model_name = "lead_model"
     deploy_to_staging(model_name, model_version)
 
 
