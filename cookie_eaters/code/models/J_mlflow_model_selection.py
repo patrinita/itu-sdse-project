@@ -30,7 +30,7 @@ def get_best_model(path="./artifacts/model_results.json"):#added
     return best_model
 
 
-def main():#added all lines below:
+def main():
 
     experiment_best = get_best_experiment(experiment_name)
     print(f"Best experiment: {experiment_best}")
