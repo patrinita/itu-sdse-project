@@ -1,6 +1,8 @@
 import mlflow
 from code.data.A_helper_functions import wait_until_ready
 from K_check_production_model import get_production_model, evaluate_production_model
+from J_mlflow_model_selection import main as select_model_main
+from E_setup_experiment import setup_mlflow
 
 def compare_and_register_model(experiment_best, model_name="lead_model", artifact_path="model"):
     # Get production info
@@ -15,7 +17,7 @@ def compare_and_register_model(experiment_best, model_name="lead_model", artifac
     # Compare with prod model
     if prod_model_exists:
         data = mlflow.get_run(prod_model_run_id)
-        prod_model_score = data[1]["metrics.f1_score"]
+        prod_model_score =data.data.metrics["f1_score"]
 
         model_status["current"] = train_model_score
         model_status["prod"] = prod_model_score
@@ -34,4 +36,20 @@ def compare_and_register_model(experiment_best, model_name="lead_model", artifac
         wait_until_ready(model_details.name, model_details.version)
         model_details = dict(model_details)
 
-    return model_details, model_status, run_id
+    return model_details, prod_model
+
+if __name__ == "__main__":
+
+    # Get best experiment output from previous step
+    _, experiment_name = setup_mlflow()
+    selection_outputs = select_model_main(experiment_name)
+    experiment_best = selection_outputs["experiment_best"]
+
+    # Compare and register
+    model_details, prod_model = compare_and_register_model(experiment_best)
+
+    print("\nModel details after comparison/registration:")
+    print(model_details)
+
+    print("\nCurrent production model info:")
+    print(prod_model)

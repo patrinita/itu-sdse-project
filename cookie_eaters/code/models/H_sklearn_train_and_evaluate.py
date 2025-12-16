@@ -14,8 +14,7 @@ class lr_wrapper(mlflow.pyfunc.PythonModel):
     def predict(self, context, model_input):
         return self.model.predict_proba(model_input)[:, 1]
 
-def load_and_split_data():
-    data = pd.read_csv("./artifacts/train_data_gold.csv")
+def load_and_split_data(data):
 
     y = data["lead_indicator"]
     X = data.drop(columns=["lead_indicator"])
@@ -76,10 +75,10 @@ def evaluate(y_true, y_pred):
         "classification_report": classification_report(y_true, y_pred, output_dict=True),
     }
 
-def main():
+def main(data):
     _, experiment_name = setup_mlflow()
 
-    X_train, X_test, y_train, y_test = load_and_split_data()
+    X_train, X_test, y_train, y_test = load_and_split_data(data)
 
     results = train_lr_with_mlflow(
         X_train, y_train, X_test, y_test, experiment_name
@@ -98,9 +97,15 @@ def main():
     print(pd.DataFrame(test_metrics["classification_report"]).T)
     
     return {
-        results["model_path"]: test_metrics["classification_report"]
+        "X_train": X_train,
+        "X_test": X_test,
+        "y_train": y_train,
+        "y_test": y_test,
+        "model_results": {results["model_path"]: test_metrics["classification_report"]},
     }
 
 
+
 if __name__ == "__main__":
-    main()
+    data = pd.read_csv("./artifacts/train_data_gold.csv")
+    outputs = main(data)

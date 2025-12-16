@@ -5,6 +5,7 @@ from sklearn.preprocessing import MinMaxScaler
 import joblib
 import json
 from code.data.A_helper_functions import describe_numeric_col, impute_missing_values
+from code.data.B_setup_data import prepare_data_and_artifacts
 
 def clean_and_preprocess_data(data, artifacts_path="./artifacts"):
     """
@@ -92,9 +93,8 @@ def clean_and_preprocess_data(data, artifacts_path="./artifacts"):
     return data
 
 if __name__ == "__main__":
-    # Load raw data (update path as needed)
-    raw_data = pd.read_csv("./data/raw_data.csv")
-    
+    # Load raw data (update path as needed)   
     # Run preprocessing
-    cleaned_data = clean_and_preprocess_data(raw_data)
+    data = prepare_data_and_artifacts()
+    cleaned_data = clean_and_preprocess_data(data)
     print("Preprocessing completed!")

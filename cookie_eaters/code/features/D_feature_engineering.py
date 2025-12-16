@@ -1,4 +1,5 @@
 import pandas as pd
+from code.data.C_preprocessing import clean_and_preprocess_data
 
 def feature_engineering(data, artifacts_path="./artifacts"):
     """
@@ -30,10 +31,10 @@ def feature_engineering(data, artifacts_path="./artifacts"):
 
 if __name__ == "__main__":
     # Load data
-    train_data = pd.read_csv("./data/training_data.csv")
+    cleaned_data = clean_and_preprocess_data()
 
     # Run feature engineering
-    engineered_data = feature_engineering(train_data)
+    engineered_data = feature_engineering(cleaned_data)
 
     # Save result
     engineered_data.to_csv("./artifacts/train_data_gold.csv", index=False)

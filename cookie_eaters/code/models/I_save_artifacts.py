@@ -1,6 +1,7 @@
 import json
 from pprint import pprint
-
+from H_sklearn_train_and_evaluate import main as train_main
+import pandas as pd
 
 def save_artifacts(X_train, model_results, column_list_path="./artifacts/columns_list.json", model_results_path="./artifacts/model_results.json"):
    
@@ -31,3 +32,14 @@ def save_artifacts(X_train, model_results, column_list_path="./artifacts/columns
         "columns": columns,
         "model_results": model_results,
     }
+
+if __name__ == "__main__":
+    # Load data
+    data = pd.read_csv("./artifacts/train_data_gold.csv")
+    
+    # Run training/evaluation to get outputs
+    outputs = train_main(data)
+    
+    # Save artifacts
+    artifacts = save_artifacts(outputs["X_train"], outputs["model_results"])
+    print("Artifacts saved:", artifacts)

@@ -80,9 +80,8 @@ def save_best_model_and_results(model_grid, y_train, y_pred_train):
     return model_results
 
 
-def main():
+def main(data):
     # Load prepared training data
-    data = pd.read_csv("./artifacts/train_data_gold.csv")
     y = data["lead_indicator"]
     X = data.drop(["lead_indicator"], axis=1)
 
@@ -108,7 +107,16 @@ def main():
     performance(y_pred_test, y_pred_train, y_test, y_train)
 
     # Save best model and results
-    save_best_model_and_results(model_grid, y_train, y_pred_train)
-
+    model_results = save_best_model_and_results(model_grid, y_train, y_pred_train)
+    
+    return {
+        "X_train": X_train,
+        "X_test": X_test,
+        "y_train": y_train,
+        "y_test": y_test,
+        "model_results": model_results,
+        "model_grid": model_grid,
+    }
 if __name__ == "__main__":
-    main()
+    data = pd.read_csv("./artifacts/train_data_gold.csv")
+    main(data)

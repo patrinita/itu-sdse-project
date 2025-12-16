@@ -1,13 +1,11 @@
 import json
 from mlflow.entities.model_registry.model_version_status import ModelVersionStatus
-import datetime
 import mlflow
 import pandas as pd
+from E_setup_experiment import setup_mlflow
 
-current_date = datetime.datetime.now().strftime("%Y_%B_%d")
 artifact_path = "model"
 model_name = "lead_model"
-experiment_name = current_date
 
 
 #get experiment model results
@@ -30,14 +28,22 @@ def get_best_model(path="./artifacts/model_results.json"):#added
     return best_model
 
 
-def main():
+def main(experiment_name, model_results_path="./artifacts/model_results.json"):
 
     experiment_best = get_best_experiment(experiment_name)
     print(f"Best experiment: {experiment_best}")
     
-    best_model = get_best_model("./artifacts/model_results.json")
+    best_model = get_best_model(model_results_path)
     print(f"Best model: {best_model}")
+
+    return {
+        "experiment_best": experiment_best,
+        "best_model": best_model
+    }
 
 
 if __name__ == "__main__":
-    main()
+    _, experiment_name = setup_mlflow()
+    
+    outputs = main(experiment_name)
+    

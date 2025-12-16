@@ -1,11 +1,7 @@
 import time
 from mlflow.tracking import MlflowClient
 
-model_version = 1
-
-client = MlflowClient()
-
-def wait_for_deployment(model_name, model_version, stage='Staging'):
+def wait_for_deployment(client, model_name, model_version, stage='Staging'):
     status = False
     while not status:
         model_version_details = dict(
@@ -19,7 +15,7 @@ def wait_for_deployment(model_name, model_version, stage='Staging'):
             time.sleep(2)
     return status
 
-def deploy_to_staging(model_name, model_version):#added
+def deploy_to_staging(client, model_name, model_version):
     model_version_details = dict(client.get_model_version(name=model_name,version=model_version))
     model_status = True
     if model_version_details['current_stage'] != 'Staging':
@@ -28,14 +24,14 @@ def deploy_to_staging(model_name, model_version):#added
             version=model_version,stage="Staging", 
             archive_existing_versions=True
         )
-        model_status = wait_for_deployment(model_name, model_version, 'Staging')
+        model_status = wait_for_deployment(client, model_name, model_version, 'Staging')
     else:
         print('Model already in staging')
-    return model_status#added
+    return model_status
 
-def main():#added all lines below
-    model_name = "lead_model"
-    deploy_to_staging(model_name, model_version)
+def main(model_name = "lead_model", model_version="1"):
+    client = MlflowClient()
+    deploy_to_staging(client, model_name, model_version)
 
 
 if __name__ == "__main__":
