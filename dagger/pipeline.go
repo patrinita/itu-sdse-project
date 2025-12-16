@@ -42,7 +42,7 @@ func Pipeline(ctx context.Context) error {
 		"./code/features/D_feature_engineering.py",
 		"./code/models/E_setup_experiment.py",
 		"./code/models/F_prepare_train_data.py",
-		"./code/model/G_XGBoost_train_and_evaluate.py",
+		"./code/models/G_XGBoost_train_and_evaluate.py",
 		"./code/models/H_sklearn_train_and_evaluate.py",
 		"./code/models/I_save_artifacts.py",
 		"./code/models/J_mlflow_model_selection.py",
