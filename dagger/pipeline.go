@@ -7,6 +7,14 @@ import (
 	"dagger.io/dagger"
 )
 
+func main() {
+	ctx := context.Background()
+	if err := Pipeline(ctx); err != nil {
+		fmt.Println("Error:", err)
+		panic(err)
+	}
+}
+
 func Pipeline(ctx context.Context) error {
 
 	// Connect to Dagger engine
@@ -33,19 +41,35 @@ func Pipeline(ctx context.Context) error {
 		"./code/data/C_preprocessing.py",
 		"./code/features/D_feature_engineering.py",
 		"./code/models/E_setup_experiment.py",
-		"./code/models/F_load_train_data.py",
-		"./code/model/G_XGBoost_train_annd_evaluate.py",
-		"./code/models/H_model_training.py",
+		"./code/models/F_prepare_train_data.py",
+		"./code/model/G_XGBoost_train_and_evaluate.py",
+		"./code/models/H_sklearn_train_and_evaluate.py",
 		"./code/models/I_save_artifacts.py",
 		"./code/models/J_mlflow_model_selection.py",
 		"./code/models/K_check_production_model.py",
-		"./code/models/L_compare_and_register.py",
+		"./code/models/L_compare_and_register_model.py",
 		"./code/models/M_model_staging.py",
 	}
 
 	for _, step := range steps {
 		fmt.Println("Running:", step)
-		python = python.WithExec([]string{"python", step})
+		res := python.WithExec([]string{"python", step})
+
+		// Capture logs
+		logs, err := res.Stdout(ctx)
+		if err != nil {
+			fmt.Println("Error getting stdout:", err)
+		}
+		fmt.Println(logs)
+
+		// Check if the step failed
+		exitCode, err := res.ExitCode(ctx)
+		if err != nil {
+			return fmt.Errorf("step failed: %s, error: %w", step, err)
+		}
+		if exitCode != 0 {
+			return fmt.Errorf("step failed: %s, exit code: %d", step, exitCode)
+		}
 	}
 
 	// Export artifacts (models, mlruns, etc.)
