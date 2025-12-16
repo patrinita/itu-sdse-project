@@ -189,3 +189,22 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+# Build artifacts
+build/
+dist/
+out/
+target/
+bin/
+
+# CI / tooling
+.cache/
+.tmp/
+tmp/
+logs/
+
+# Ignore MLflow run artifacts
+cookie_eaters/mlruns/
+
+# Project artifacts
+cookie_eaters/artifacts/
