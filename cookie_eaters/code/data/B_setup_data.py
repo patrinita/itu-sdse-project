@@ -68,9 +68,8 @@ def prepare_data_and_artifacts(raw_data_path="/app/raw/raw_data.csv"):
     print("Date limits saved to artifacts/date_limits.json")
     data.to_csv("./artifacts/raw_filtered.csv", index=False)
     print("Saved filtered raw data to artifacts/raw_filtered.csv")
+    
     return data
 
-# Runs the function if script is executed directly
-if __name__ == "__main__":
-    data = prepare_data_and_artifacts(raw_data_path="/app/raw/raw_data.csv")
+
 

@@ -29,13 +29,3 @@ def feature_engineering(data, artifacts_path="./artifacts"):
 
     return data
 
-if __name__ == "__main__":
-    # Load data
-    cleaned_data = clean_and_preprocess_data()
-
-    # Run feature engineering
-    engineered_data = feature_engineering(cleaned_data)
-
-    # Save result
-    engineered_data.to_csv("./artifacts/train_data_gold.csv", index=False)
-    print("train data gold is created!")

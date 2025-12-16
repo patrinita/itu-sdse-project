@@ -95,10 +95,3 @@ def clean_and_preprocess_data(data, artifacts_path="./artifacts"):
     print("Saved training_data.csv in artifacts")
 
     return data
-
-if __name__ == "__main__":
-    print("Loading data from artifacts/raw_filtered.csv")
-    data = pd.read_csv("./artifacts/raw_filtered.csv")
-
-    cleaned_data = clean_and_preprocess_data(data)
-    print("Preprocessing completed!")
