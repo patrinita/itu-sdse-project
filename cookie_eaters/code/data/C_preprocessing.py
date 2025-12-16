@@ -95,6 +95,7 @@ def clean_and_preprocess_data(data, artifacts_path="./artifacts"):
 if __name__ == "__main__":
     # Load raw data (update path as needed)   
     # Run preprocessing
-    data = prepare_data_and_artifacts()
+    raw_data_path="raw/raw_data.csv"
+    data = prepare_data_and_artifacts(raw_data_path)
     cleaned_data = clean_and_preprocess_data(data)
     print("Preprocessing completed!")

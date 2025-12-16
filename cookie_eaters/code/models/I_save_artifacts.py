@@ -1,6 +1,6 @@
 import json
 from pprint import pprint
-from H_sklearn_train_and_evaluate import main as train_main
+from code.models.H_sklearn_train_and_evaluate import main as train_main
 import pandas as pd
 
 def save_artifacts(X_train, model_results, column_list_path="./artifacts/columns_list.json", model_results_path="./artifacts/model_results.json"):

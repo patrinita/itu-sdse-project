@@ -2,7 +2,7 @@ import json
 from mlflow.entities.model_registry.model_version_status import ModelVersionStatus
 import mlflow
 import pandas as pd
-from E_setup_experiment import setup_mlflow
+from code.models.E_setup_experiment import setup_mlflow
 
 artifact_path = "model"
 model_name = "lead_model"

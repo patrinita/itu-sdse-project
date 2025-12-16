@@ -31,6 +31,7 @@ func Pipeline(ctx context.Context) error {
 
 	// Mount your local Python project
 	python = python.WithDirectory("/app", client.Host().Directory("../cookie_eaters"))
+	python = python.WithDirectory("/app/raw", client.Host().Directory("../cookie_eaters/raw"))
 
 	// Install dependencies if you use requirements
 	python = python.WithExec([]string{"pip", "install", "-r", "requirements.txt"})
@@ -55,14 +56,18 @@ func Pipeline(ctx context.Context) error {
 		fmt.Println("Running:", step)
 		res := python.WithExec([]string{"python", step})
 
-		// Capture logs
-		logs, err := res.Stdout(ctx)
+		stdout, err := res.Stdout(ctx)
 		if err != nil {
 			fmt.Println("Error getting stdout:", err)
 		}
-		fmt.Println(logs)
+		stderr, err := res.Stderr(ctx)
+		if err != nil {
+			fmt.Println("Error getting stderr:", err)
+		}
 
-		// Check if the step failed
+		fmt.Println("STDOUT:\n", stdout)
+		fmt.Println("STDERR:\n", stderr)
+
 		exitCode, err := res.ExitCode(ctx)
 		if err != nil {
 			return fmt.Errorf("step failed: %s, error: %w", step, err)

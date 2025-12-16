@@ -1,8 +1,8 @@
 import mlflow
 from code.data.A_helper_functions import wait_until_ready
-from K_check_production_model import get_production_model, evaluate_production_model
-from J_mlflow_model_selection import main as select_model_main
-from E_setup_experiment import setup_mlflow
+from code.models.K_check_production_model import get_production_model, evaluate_production_model
+from code.models.J_mlflow_model_selection import main as select_model_main
+from code.models.E_setup_experiment import setup_mlflow
 
 def compare_and_register_model(experiment_best, model_name="lead_model", artifact_path="model"):
     # Get production info

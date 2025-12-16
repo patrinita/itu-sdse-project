@@ -5,7 +5,7 @@ import datetime
 import json
 import os
 
-def prepare_data_and_artifacts():
+def prepare_data_and_artifacts(raw_data_path="raw/raw_data.csv"):
     """
     Creates directories, loads data, applies date filtering, 
     and saves date limits for artifacts.
@@ -26,7 +26,7 @@ def prepare_data_and_artifacts():
 
     # Loads training data
     print("Loading training data")
-    data = pd.read_csv("raw/raw_data.csv")
+    data = pd.read_csv(raw_data_path)
 
     print("Total rows:", data.count())
     print(data.head(5))

@@ -5,7 +5,7 @@ import joblib
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import RandomizedSearchCV, train_test_split
 from sklearn.metrics import f1_score,confusion_matrix, classification_report, accuracy_score
-from E_setup_experiment import setup_mlflow
+from code.models.E_setup_experiment import setup_mlflow
 
 class lr_wrapper(mlflow.pyfunc.PythonModel):
     def __init__(self, model):
