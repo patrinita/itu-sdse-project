@@ -7,7 +7,9 @@ from code.models.E_setup_experiment import setup_mlflow
 def compare_and_register_model(experiment_best, model_name="lead_model", artifact_path="model"):
     # Get production info
     prod_model = get_production_model(model_name)
-    prod_model_exists, prod_model_run_id, prod_model_version = evaluate_production_model(prod_model)
+    prod_model_exists, prod_model_run_id, prod_model_version = evaluate_production_model(
+        prod_model, model_name
+    )
 
     train_model_score = experiment_best["metrics.f1_score"]
     model_details = {}
@@ -31,6 +33,7 @@ def compare_and_register_model(experiment_best, model_name="lead_model", artifac
 
     # Register model if needed
     if run_id is not None:
+        print(f'Best model found: {run_id}')
         model_uri = f"runs:/{run_id}/{artifact_path}"
         model_details = mlflow.register_model(model_uri=model_uri, name=model_name)
         wait_until_ready(model_details.name, model_details.version)
@@ -48,8 +51,6 @@ if __name__ == "__main__":
     # Compare and register
     model_details, prod_model = compare_and_register_model(experiment_best)
 
-    print("\nModel details after comparison/registration:")
     print(model_details)
 
-    print("\nCurrent production model info:")
-    print(prod_model)
+   

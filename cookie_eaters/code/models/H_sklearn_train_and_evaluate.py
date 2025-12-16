@@ -93,9 +93,18 @@ def main(data):
     print("\n Accuracy train:", train_metrics["accuracy"])
     print("Accuracy test:", test_metrics["accuracy"])
 
-    print("\nTest classification report:")
-    print(pd.DataFrame(test_metrics["classification_report"]).T)
-    
+    print("\nTest actual/predicted:\n")
+    print(pd.crosstab(y_test, results["y_pred_test"], rownames=['Actual'], colnames=['Predicted'], margins=True), "\n")
+
+    print("Test classification report:\n")
+    print(classification_report(y_test, results["y_pred_test"]), "\n")
+
+    print("\nTrain actual/predicted:\n")
+    print(pd.crosstab(y_train, results["y_pred_train"], rownames=['Actual'], colnames=['Predicted'], margins=True), "\n")
+
+    print("Train classification report:\n")
+    print(classification_report(y_train, results["y_pred_train"]), "\n")
+
     return {
         "X_train": X_train,
         "X_test": X_test,

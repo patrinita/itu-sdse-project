@@ -1,5 +1,5 @@
 import pandas as pd
-from code.data.C_preprocessing import clean_and_preprocess_data
+from ..data.C_preprocessing import clean_and_preprocess_data
 
 def feature_engineering(data, artifacts_path="./artifacts"):
     """
@@ -9,7 +9,7 @@ def feature_engineering(data, artifacts_path="./artifacts"):
     #removing irrelevant columns from the dataframe
     data = data.drop(
         [
-            "is_active", "marketing_consent", "first_booking", "existing_customer", "last_seen", "domain", "country", "visited_learn_more_before_booking", "visited_faq"
+            "is_active", "first_booking", "last_seen", "domain", "country", "visited_learn_more_before_booking", "visited_faq"
         ],
         axis=1
     )

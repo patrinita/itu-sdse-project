@@ -5,7 +5,7 @@ import datetime
 import json
 import os
 
-def prepare_data_and_artifacts(raw_data_path="/app/raw/raw_data.csv"):
+def prepare_data_and_artifacts(raw_data_path="raw/raw_data.csv"):
     """
     Creates directories, loads data, applies date filtering, 
     and saves date limits for artifacts.

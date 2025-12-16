@@ -1,8 +1,14 @@
 import pandas as pd
-from code.data.A_helper_functions import create_dummy_cols
-from code.data.B_setup_data import prepare_data_and_artifacts
-from code.data.C_preprocessing import clean_and_preprocess_data
-from code.features.D_feature_engineering import feature_engineering
+import sys
+from pathlib import Path
+# Add project root to sys.path
+PROJECT_ROOT = Path(__file__).resolve().parents[2]  # goes up 3 levels to the root of your repo
+sys.path.insert(0, str(PROJECT_ROOT))
+from ..data.A_helper_functions import create_dummy_cols
+from ..data.B_setup_data import prepare_data_and_artifacts
+from ..data.C_preprocessing import clean_and_preprocess_data
+from ..features.D_feature_engineering import feature_engineering
+
 
 #should also be in a function:
 def prepare_training_data(data): 

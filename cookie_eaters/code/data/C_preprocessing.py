@@ -4,7 +4,7 @@ from pprint import pprint
 from sklearn.preprocessing import MinMaxScaler
 import joblib
 import json
-from code.data.A_helper_functions import describe_numeric_col, impute_missing_values
+from .A_helper_functions import describe_numeric_col, impute_missing_values
 
 def clean_and_preprocess_data(data, artifacts_path="./artifacts"):
     """
