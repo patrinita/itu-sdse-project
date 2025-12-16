@@ -14,7 +14,6 @@ func main() {
 		panic(err)
 	}
 }
-
 func Pipeline(ctx context.Context) error {
 
 	// Connect to Dagger engine
