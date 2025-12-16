@@ -5,7 +5,7 @@ import datetime
 import json
 import os
 
-def prepare_data_and_artifacts(raw_data_path="raw/raw_data.csv"):
+def prepare_data_and_artifacts(raw_data_path="/app/raw/raw_data.csv"):
     """
     Creates directories, loads data, applies date filtering, 
     and saves date limits for artifacts.
@@ -21,8 +21,20 @@ def prepare_data_and_artifacts(raw_data_path="raw/raw_data.csv"):
     pd.set_option('display.float_format', lambda x: "%.3f" % x)
 
     # Pulls latest data using DVC
-    subprocess.run(["dvc", "pull"])
-    print("DVC pull completed")
+    # subprocess.run(["dvc", "pull"])
+    # print("DVC pull completed")
+
+    # if os.path.exists(".dvc"):
+    #     subprocess.run(["dvc", "pull"], check=True)
+    # else:
+    #     print("Skipping DVC pull (not in DVC repo)")
+    dvc_dir = "code/.dvc"
+    if os.path.isdir(dvc_dir):
+        subprocess.run(["dvc", "pull"], cwd="code", check=True)
+        print("DVC pull completed")
+    else:
+        print("Skipping DVC pull (code/.dvc not found)")
+
 
     # Loads training data
     print("Loading training data")
@@ -54,9 +66,11 @@ def prepare_data_and_artifacts(raw_data_path="raw/raw_data.csv"):
         json.dump(date_limits, f)
 
     print("Date limits saved to artifacts/date_limits.json")
-    
+    data.to_csv("./artifacts/raw_filtered.csv", index=False)
+    print("Saved filtered raw data to artifacts/raw_filtered.csv")
     return data
 
 # Runs the function if script is executed directly
 if __name__ == "__main__":
-    data = prepare_data_and_artifacts()
+    data = prepare_data_and_artifacts(raw_data_path="/app/raw/raw_data.csv")
+

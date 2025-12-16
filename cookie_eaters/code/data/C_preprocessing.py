@@ -5,7 +5,6 @@ from sklearn.preprocessing import MinMaxScaler
 import joblib
 import json
 from code.data.A_helper_functions import describe_numeric_col, impute_missing_values
-from code.data.B_setup_data import prepare_data_and_artifacts
 
 def clean_and_preprocess_data(data, artifacts_path="./artifacts"):
     """
@@ -20,6 +19,11 @@ def clean_and_preprocess_data(data, artifacts_path="./artifacts"):
     data = data.dropna(axis=0, subset=["lead_id"])
 
     data = data[data.source == "signup"]
+
+    #added to check if source columnn is empty
+    if data.empty:
+        raise ValueError("Data is empty after filtering source == 'signup'")
+
     result=data.lead_indicator.value_counts(normalize = True)
 
     print("Target value counter")
@@ -93,9 +97,8 @@ def clean_and_preprocess_data(data, artifacts_path="./artifacts"):
     return data
 
 if __name__ == "__main__":
-    # Load raw data (update path as needed)   
-    # Run preprocessing
-    raw_data_path="raw/raw_data.csv"
-    data = prepare_data_and_artifacts(raw_data_path)
+    print("Loading data from artifacts/raw_filtered.csv")
+    data = pd.read_csv("./artifacts/raw_filtered.csv")
+
     cleaned_data = clean_and_preprocess_data(data)
     print("Preprocessing completed!")
