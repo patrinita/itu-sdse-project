@@ -43,3 +43,6 @@ jobs:
           cd dagger
           go mod download
           dagger run go run pipeline.go
+
+      - name: Run Model Inference Test Action
+        uses: lasselundstenjensen/itu-sdse-project-model-validator@main
