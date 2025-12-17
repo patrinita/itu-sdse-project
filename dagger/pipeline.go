@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"log"
+	"path/filepath"
 
 	"dagger.io/dagger"
 )
@@ -16,12 +17,18 @@ func main() {
 	}
 	defer client.Close()
 
+	// Get absolute path to project root
+	absPath, err := filepath.Abs("../") // relative to dagger/ folder
+	if err != nil {
+		panic(err)
+	}
+
 	// Mount project root
-	src := client.Host().Directory("..")
+	src := client.Host().Directory(absPath)
 
 	python := client.Container().
 		From("python:3.11-slim").
-		WithDirectory("/app", src).
+		WithMountedDirectory("/app", src).
 		WithWorkdir("/app/cookie_eaters").
 		WithExec([]string{"pip", "install", "-r", "requirements.txt"})
 
