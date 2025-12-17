@@ -29,3 +29,9 @@ jobs:
           cd dagger
           go mod download
           dagger run go run pipeline.go
+
+      - name: Upload Model Artifact
+        uses: actions/upload-artifact@v4.4.0
+        with:
+          name: model
+          path: cookie_eaters/artifacts/lead_model_lr.pkl
