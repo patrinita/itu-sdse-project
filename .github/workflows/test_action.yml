@@ -19,11 +19,20 @@ jobs:
         with:
           go-version: '1.25'
 
+      - name: Cache Go modules
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/go/pkg/mod
+            ~/go/cache
+          key: go-mod-${{ hashFiles('dagger/go.sum') }}
+          restore-keys: go-mod-
+
       - name: Install Dagger CLI (if missing)
         run: |
           if ! command -v dagger &> /dev/null; then
             echo "Dagger CLI not found, downloading..."
-            curl -fsSL https://get.dagger.io -o get-dagger.sh
+            curl -fsSL https://get.dagger.io -o get-dagger.sh || exit 1
             sh get-dagger.sh
           else
             echo "Dagger CLI already installed"
