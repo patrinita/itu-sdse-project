@@ -54,25 +54,37 @@ The final outputs (including processed datasets, trained models and evaluation r
 ## Comments on reproducibility
 The pipeline is executed inside a container using Dagger to ensure consistent execution across environments. Generated outputs such as the artifacts and the MLflow runs are excluded from version control to keep the repository clean and reproducible.
 
+## Note on GitHub Actions execution
+During testing, the GitHub Actions workflow failed at the step where the Dagger CLI is downloaded due to a temporary network/DNS resolution issue on the GitHub-hosted runner (`get.dagger.io` could not be resolved)  
+
+The pipeline itself runs successfully locally and the issue is unrelated to the pipeline implementation.
+
 ## Project organization
 To make it easier to see where things are located:
 ```
-├── .github/workflows/        <- GitHub Actions workflows
-├── cookie_eaters/
-│   ├── raw/                 <- Raw input data (gitignored)
-│   ├── code/                <- Main pipeline implementation
-│   │   ├── data/            <- Data loading & preprocessing
-│   │   ├── features/        <- Feature engineering
-│   │   └── models/          <- Training, evaluation, model registry logic
-│   ├── artifacts/           <- Generated outputs (gitignored)
-│   ├── mlruns/              <- MLflow tracking (gitignored)
+itu-sdse-project/
+├── .github/workflows/              <- GitHub Actions workflows
+├── cookie_eaters/                  <- Main Python project folder
+│   ├── code/                       <- Pipeline steps
+│   │   ├── data/                   <- Data setup & preprocessing
+│   │   ├── features/               <- Feature engineering
+│   │   └── models/                 <- Training, evaluation, MLflow & model registry
+│   ├── cookie_eaters/              <- Python package (importable module)
+│   │   └── __init__.py
+│   ├── raw/                        <- Raw input data (gitignored)
+│   ├── .gitignore
+│   ├── Makefile
+│   ├── pyproject.toml
+│   ├── README.md
 │   ├── requirements.txt
-│   └── __init__.py
-├── dagger/
-│   ├── pipeline.go          <- Dagger pipeline definition
+│   └── setup.cfg
+├── dagger/                         <- Dagger pipeline runner (Go)
+│   ├── pipeline.go
 │   ├── go.mod
 │   └── go.sum
-├── notebooks/               <- Exploratory notebooks
-├── README.md
-└── .gitignore
+├── docs/
+├── notebooks/
+├── .gitignore
+├── action.yml
+└── README.md
 ```
