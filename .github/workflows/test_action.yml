@@ -17,16 +17,13 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
-          go-version: '1.25'   
-#added this to try and fix possible network issues...
-      - name: Install Dagger CLI (with retry)
+          go-version: '1.25'
+
+      - name: Install Dagger CLI (if missing)
         run: |
           if ! command -v dagger &> /dev/null; then
             echo "Dagger CLI not found, downloading..."
-            for i in {1..3}; do
-              curl -fsSL https://get.dagger.io -o get-dagger.sh && break || echo "Retry $i..."
-              sleep 5
-            done
+            curl -fsSL https://get.dagger.io -o get-dagger.sh
             sh get-dagger.sh
           else
             echo "Dagger CLI already installed"
@@ -37,9 +34,3 @@ jobs:
           cd dagger
           go mod download
           dagger run go run pipeline.go
-
-      - name: Upload Model Artifact
-        uses: actions/upload-artifact@v4.4.0
-        with:
-          name: model
-          path: cookie_eaters/artifacts/lead_model_lr.pkl
