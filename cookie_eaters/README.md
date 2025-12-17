@@ -5,15 +5,23 @@
 **Repo: https://github.com/patrinita/itu-sdse-project**
 
 ## Project overview
-This project implements an end-to-end ML pipeline with the goal to build a reproducible automated system that: takes raw_data as input, preprocesses and prepares it, trains and evaluates ML models, tracks experiments and metrics and stores and registers the model artifacts, so that reproducibility is ensured.
+This project implements an end-to-end ML pipeline with the goal to build a reproducible automated system that: takes raw_data as input, preprocesses and prepares it, trains and evaluates ML models, tracks experiments and metrics using MLflow and stores model artifacts such that reproducibility is ensured.
+
+We use Dagger to run the pipeline inside a container, which helps ensure reproducibility across different machines.
 
 ## How to run the project
 Prerequisites:
-- Python 3.10+ (python dependencies: pip install -r requirements.txt)
-- Git
-- DVC
-- Docker (required for Dagger)
-- MLflow
+- Docker (required to run the pipeline with Dagger)
+- Go
+- All Python dependencies including MLflow will be installed automatically inside the container when running the pipeline
+
+## How to run the pipeline
+Run these commands in the repository root:
+```bash
+cd dagger
+go run pipeline.go
+```
+This will run the full ML pipeline inside a container and will generate its outputs in the `cookie_eaters/artifacts/` and `cookie_eaters/mlruns/` directories.
 
 ## Data setup: do this before running the code!
 The raw dataset is required to run the pipeline and was not committed to Git.
@@ -26,59 +34,45 @@ This folder is gitignored and must be created locally.
     <img src="https://img.shields.io/badge/CCDS-Project%20template-328F97?logo=cookiecutter" />
 </a>
 
-Aminna & Patricia eat cookies (yammy)
-
-
-## Project Organization
-
+## Local execution
+Some pipeline steps can also be run locally when debugging the code.  
+These steps were chosen because they represent the main stages of the pipeline (data setup, preprocessing, feature engineering, training data preparation, model training) and they can be tested independently:
+```bash
+cd cookie_eaters
+pip install -r requirements.txt
+python -m code.data.B_setup_data
+python -m code.data.C_preprocessing
+python -m code.features.D_feature_engineering
+python -m code.models.F_prepare_train_data
+python -m code.models.H_sklearn_train_and_evaluate
 ```
-├── LICENSE            <- Open-source license if one is chosen
-├── Makefile           <- Makefile with convenience commands like `make data` or `make train`
-├── README.md          <- The top-level README for developers using this project.
-├── data
-│   ├── external       <- Data from third party sources.
-│   ├── interim        <- Intermediate data that has been transformed.
-│   ├── processed      <- The final, canonical data sets for modeling.
-│   └── raw            <- The original, immutable data dump.
-│
-├── docs               <- A default mkdocs project; see www.mkdocs.org for details
-│
-├── models             <- Trained and serialized models, model predictions, or model summaries
-│
-├── notebooks          <- Jupyter notebooks. Naming convention is a number (for ordering),
-│                         the creator's initials, and a short `-` delimited description, e.g.
-│                         `1.0-jqp-initial-data-exploration`.
-│
-├── pyproject.toml     <- Project configuration file with package metadata for 
-│                         cookie_eaters and configuration for tools like black
-│
-├── references         <- Data dictionaries, manuals, and all other explanatory materials.
-│
-├── reports            <- Generated analysis as HTML, PDF, LaTeX, etc.
-│   └── figures        <- Generated graphics and figures to be used in reporting
-│
-├── requirements.txt   <- The requirements file for reproducing the analysis environment, e.g.
-│                         generated with `pip freeze > requirements.txt`
-│
-├── setup.cfg          <- Configuration file for flake8
-│
-└── cookie_eaters   <- Source code for use in this project.
-    │
-    ├── __init__.py             <- Makes cookie_eaters a Python module
-    │
-    ├── config.py               <- Store useful variables and configuration
-    │
-    ├── dataset.py              <- Scripts to download or generate data
-    │
-    ├── features.py             <- Code to create features for modeling
-    │
-    ├── modeling                
-    │   ├── __init__.py 
-    │   ├── predict.py          <- Code to run model inference with trained models          
-    │   └── train.py            <- Code to train models
-    │
-    └── plots.py                <- Code to create visualizations
+## Pipeline overview
+The pipeline starts from a raw CSV file (`cookie_eaters/raw/raw_data.csv`) and performs data preparation and preprocessing steps, followed by feature engineering and model training.  
+During training, the model performance is evaluated and tracked using MLflow.  
+The final outputs (including processed datasets, trained models and evaluation results) are saved as artifacts (inside `cookie_eaters/artifacts/`).
+
+## Comments on reproducibility
+The pipeline is executed inside a container using Dagger to ensure consistent execution across environments. Generated outputs such as the artifacts and the MLflow runs are excluded from version control to keep the repository clean and reproducible.
+
+## Project organization
+To make it easier to see where things are located:
 ```
-
---------
-
+├── .github/workflows/        <- GitHub Actions workflows
+├── cookie_eaters/
+│   ├── raw/                 <- Raw input data (gitignored)
+│   ├── code/                <- Main pipeline implementation
+│   │   ├── data/            <- Data loading & preprocessing
+│   │   ├── features/        <- Feature engineering
+│   │   └── models/          <- Training, evaluation, model registry logic
+│   ├── artifacts/           <- Generated outputs (gitignored)
+│   ├── mlruns/              <- MLflow tracking (gitignored)
+│   ├── requirements.txt
+│   └── __init__.py
+├── dagger/
+│   ├── pipeline.go          <- Dagger pipeline definition
+│   ├── go.mod
+│   └── go.sum
+├── notebooks/               <- Exploratory notebooks
+├── README.md
+└── .gitignore
+```
