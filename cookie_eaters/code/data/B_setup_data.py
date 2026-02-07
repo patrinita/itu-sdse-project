@@ -28,12 +28,12 @@ def prepare_data_and_artifacts(raw_data_path="raw/raw_data.csv"):
     #     subprocess.run(["dvc", "pull"], check=True)
     # else:
     #     print("Skipping DVC pull (not in DVC repo)")
-    dvc_dir = "code/.dvc"
-    if os.path.isdir(dvc_dir):
-        subprocess.run(["dvc", "pull"], cwd="code", check=True)
-        print("DVC pull completed")
-    else:
-        print("Skipping DVC pull (code/.dvc not found)")
+    #dvc_dir = "code/.dvc"
+    #if os.path.isdir(dvc_dir):
+    #    subprocess.run(["dvc", "pull"], cwd="code", check=True)
+    #    print("DVC pull completed")
+    #else:
+    #    print("Skipping DVC pull (code/.dvc not found)")
 
 
     # Loads training data
