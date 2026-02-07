@@ -1,6 +1,7 @@
 # Cookie Eaters - MLOps and Software Engineering Project
 
 Amina Lykke Said & Patricia Nita
+
 Repo: https://github.com/patrinita/itu-sdse-project
 
 ## Project overview
@@ -12,13 +13,18 @@ This project implements an end-to-end, reproducible ML pipeline that:
 
 The pipeline runs inside containers using Dagger to ensure reproducibility across machines.
 
-## Run the pipeline
-Requirements: Docker + Dagger + Go
+## Requirements
+- Docker
+- Dagger
+- Go (version defined in `dagger/go.mod`)
 
+## Run the pipeline
 From the repo root:
+
 ```bash
 dagger run go run ./dagger
 ```
+
 This runs the full pipeline (test -> train -> build) and outputs the `model` artifact.
 
 ## Pipeline overview
@@ -29,6 +35,7 @@ All steps run inside containers via Dagger. Generated artifacts and MLflow runs 
 
 ## Project organization
 To make it easier to see where things are located:
+
 ```
 itu-sdse-project/
 ├── .github/workflows/
