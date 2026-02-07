@@ -23,7 +23,7 @@ func main() {
 		panic(err)
 	}
 
-	// Mount project root
+// Mount project root
 	src := client.Host().Directory(absPath)
 
 	python := client.Container().
@@ -45,9 +45,12 @@ func main() {
 
 	for _, step := range steps {
 		log.Println("Running:", step)
-		python = python.WithExec([]string{"sh", "-c", step})
+		python = python.WithExec([]string{
+    		"sh", "-c",
+    		step + " || (echo 'FAILED STEP: " + step + "' && exit 1)",
+		})
 	}
-
+	
 	_, err = python.ExitCode(ctx)
 	if err != nil {
 		panic(err)
