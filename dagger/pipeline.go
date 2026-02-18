@@ -38,6 +38,7 @@ func main() {
 		"python -m code.features.D_feature_engineering",
 		"python -m code.models.F_prepare_train_data",
 		"python -m code.models.H_sklearn_train_and_evaluate",
+		"python -m code.models.I_save_artifacts",
 		"python -m code.models.J_mlflow_model_selection",
 		"python -m code.models.K_check_production_model",
 		"python -m code.models.L_compare_and_register_model",
