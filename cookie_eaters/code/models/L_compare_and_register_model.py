@@ -1,8 +1,12 @@
 import mlflow
+import mlflow.sklearn
+import os
+import pickle
 from code.data.A_helper_functions import wait_until_ready
 from code.models.K_check_production_model import get_production_model, evaluate_production_model
 from code.models.J_mlflow_model_selection import main as select_model_main
 from code.models.E_setup_experiment import setup_mlflow
+
 
 def compare_and_register_model(experiment_best, model_name="lead_model", artifact_path="model"):
     # Get production info
@@ -53,4 +57,21 @@ if __name__ == "__main__":
 
     print(model_details)
 
-   
+
+    print("Exporting production model to artifacts/model.pkl")
+
+    # Load the production model from MLflow registry
+    model = mlflow.pyfunc.load_model("models:/lead_model/latest")
+
+
+    # Ensure artifacts folder exists
+    os.makedirs("artifacts", exist_ok=True)
+
+    # Save as plain pickle file
+    with open("artifacts/model.pkl", "wb") as f:
+        pickle.dump(model, f)
+
+    print("Model exported successfully!")
+
+    
+
