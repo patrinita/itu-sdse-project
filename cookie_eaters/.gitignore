@@ -203,8 +203,12 @@ bin/
 tmp/
 logs/
 
-# Ignore MLflow run artifacts
+# MLflow
 cookie_eaters/mlruns/
 
-# Project artifacts
-cookie_eaters/artifacts/
+# Model artifacts
+cookie_eaters/artifacts/*.pkl
+cookie_eaters/artifacts/*.joblib
+cookie_eaters/artifacts/*.json
+cookie_eaters/artifacts/*.csv
+
