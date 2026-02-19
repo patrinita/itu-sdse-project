@@ -23,14 +23,14 @@ func main() {
 		panic(err)
 	}
 
-// Mount project root
+	// Mount project root
 	src := client.Host().Directory(absPath)
 
 	python := client.Container().
 		From("python:3.11-slim").
 		WithMountedDirectory("/app", src).
 		WithWorkdir("/app/cookie_eaters").
-		WithExec([]string{"pip", "install", "-r", "requirements.txt"})
+		WithExec([]string{"pip", "install", "--default-timeout=1000", "--no-cache-dir", "-r", "requirements.txt"})
 
 	steps := []string{
 		"python -m code.data.B_setup_data",
@@ -47,12 +47,19 @@ func main() {
 	for _, step := range steps {
 		log.Println("Running:", step)
 		python = python.WithExec([]string{
-    		"sh", "-c",
-    		step + " || (echo 'FAILED STEP: " + step + "' && exit 1)",
+			"sh", "-c",
+			step + " || (echo 'FAILED STEP: " + step + "' && exit 1)",
 		})
 	}
-	
+
 	_, err = python.ExitCode(ctx)
+	if err != nil {
+		panic(err)
+	}
+
+	_, err = python.
+		Directory("artifacts").
+		Export(ctx, "../cookie_eaters/artifacts")
 	if err != nil {
 		panic(err)
 	}
