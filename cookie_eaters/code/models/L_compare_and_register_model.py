@@ -73,7 +73,7 @@ if __name__ == "__main__":
     # Save only if we actually have a model
     if model is not None:
         with open("artifacts/model.pkl", "wb") as f:
-            pickle.dump(model, f)
+            pickle.dump(model._model_impl.python_model.model, f)
         print("Model exported successfully!")
     else:
         print("No model exported this run.")
