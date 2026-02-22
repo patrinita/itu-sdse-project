@@ -57,21 +57,23 @@ if __name__ == "__main__":
 
     print(model_details)
 
-
     print("Exporting production model to artifacts/model.pkl")
-
-    # Load the production model from MLflow registry
-    model = mlflow.pyfunc.load_model("models:/lead_model/latest")
-
+# Try loading production model from MLflow registry
+    try:
+        model = mlflow.pyfunc.load_model("models:/lead_model/latest")
+        print("Loaded model from registry")
+    except Exception as e:
+        print("No registered model found yet — skipping export from registry.")
+        print("Reason:", e)
+        model = None
 
     # Ensure artifacts folder exists
     os.makedirs("artifacts", exist_ok=True)
 
-    # Save as plain pickle file
-    with open("artifacts/model.pkl", "wb") as f:
-        pickle.dump(model, f)
-
-    print("Model exported successfully!")
-
-    
-
+    # Save only if we actually have a model
+    if model is not None:
+        with open("artifacts/model.pkl", "wb") as f:
+            pickle.dump(model, f)
+        print("Model exported successfully!")
+    else:
+        print("No model exported this run.")
