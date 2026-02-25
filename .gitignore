@@ -1,6 +1,6 @@
-# Created by venv; see https://docs.python.org/3/library/venv.html
 *.DS_Store
 .venv/
 cookie_eaters/artifacts/
 cookie_eaters/mlruns/
 cookie_eaters/mlflow.db
+
