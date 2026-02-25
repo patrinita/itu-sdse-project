@@ -31,11 +31,15 @@ jobs:
           go mod download
           dagger run go run pipeline.go
 
+      - name: Prepare model for validator
+        run: |
+          mkdir -p model
+          cp cookie_eaters/artifacts/lead_model_lr.pkl model/model.pkl
       - name: Upload Model Artifact
         uses: actions/upload-artifact@v4
         with:
           name: model
-          path: cookie_eaters/artifacts/lead_model_lr.pkl
+          path: model/model.pkl
 
       - name: Run Model Inference Test Action
         uses: lasselundstenjensen/itu-sdse-project-model-validator@main
