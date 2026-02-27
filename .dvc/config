@@ -1,4 +1,4 @@
 [core]
     remote = storage
 ['remote "storage"']
-    url = ../git@github.com:patrinita/itu-sdse-data-storage.git
+    url = https://github.com/patrinita/itu-sdse-data-storage.git
