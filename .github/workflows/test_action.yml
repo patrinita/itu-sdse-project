@@ -14,6 +14,20 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install DVC
+        run: pip install "dvc[ssh]"
+
+      - name: Override DVC remote to HTTPS for CI
+        run: dvc remote modify storage url https://github.com/patrinita/itu-sdse-data-storage.git
+
+      - name: Pull DVC data
+        run: dvc pull
+
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
