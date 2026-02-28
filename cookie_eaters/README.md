@@ -12,54 +12,72 @@ This project implements an end-to-end, reproducible ML pipeline that:
 - produces a versioned model artifact
 
 The pipeline runs inside containers using Dagger to ensure reproducibility across machines.
-
-## Requirements
-- Docker
-- Dagger
-- Go (version defined in `dagger/go.mod`)
-
-## Run the pipeline
-From the repo root:
-
+---
+## Quick start
 ```bash
-dagger run go run ./dagger
+git clone https://github.com/patrinita/itu-sdse-project.git
+cd itu-sdse-project/dagger
+go mod download
+dagger run go run pipeline.go
 ```
-
-This runs the full pipeline (test -> train -> build) and outputs the `model` artifact.
-
-## Pipeline overview
-The pipeline reads `cookie_eaters/raw/raw_data.csv`, performs preprocessing and feature engineering, trains models, tracks results with MLflow and saves outputs in `cookie_eaters/artifacts/`.
-
+Generated artifacts will appear in:
+```bash
+cookie_eaters/artifacts/
+```
+---
 ## Reproducibility
-All steps run inside containers via Dagger. Generated artifacts and MLflow runs are excluded from version control.
+This project is fully reproducible. The entire ML pipeline runs inside a Docker container orchestrated by Dagger. No local Python setup is required.
 
+Prerequisites
+- Docker Desktop (running)
+- Go (version specified in `dagger/go.mod`)
+- Dagger CLI
+
+Why This Is Reproducible:
+- Execution environment is containerized (Docker)
+- Python version is fixed via `python:3.11-slim`
+- Dependencies are pinned in `requirements.txt`
+- The pipeline is fully defined as code in `dagger/pipeline.go`
+- No manual setup or local Python installation is required.
+
+Running the Quick Start commands on any machine with Docker installed will reproduce the full training pipeline and generate identical artifacts.
+---
+## Continuous Integration (CI)
+GitHub Actions automatically validates reproducibility on every push and pull request to `main`.
+The CI workflow:
+1. Checks out the repository
+2. Sets up Go (version from dagger/go.mod)
+3. Runs Dagger inside Docker
+4. Executes the full pipeline
+5. Exports the trained model artifact
+6. Runs an external model validation action
+
+This ensures the pipeline executes successfully in a clean environment and produces deterministic outputs.
+---
+## Pipeline overview
+The pipeline reads `raw_data.csv`, performs preprocessing, trains models, tracks results with MLflow and saves artifacts.
+---
 ## Project organization
-To make it easier to see where things are located:
+The following structure highlights the main architectural components of the repository and how responsibilities are separated across data versioning, ML logic, orchestration, and CI:
 
 ```
 itu-sdse-project/
-├── .github/workflows/
-├── cookie_eaters/
-│   ├── code/                       <- Pipeline steps
-│   │   ├── data/                   <- Data setup & preprocessing
-│   │   ├── features/               <- Feature engineering
-│   │   └── models/                 <- Training, evaluation, MLflow & model registry
-│   ├── cookie_eaters/
-│   │   └── __init__.py
+├── .dvc/                         <- DVC data versioning metadata
+├── .github/workflows/            <- CI workflow (GitHub Actions)
+├── cookie_eaters/                <- Python ML project
+│   ├── code/                     <- Pipeline step implementations (data, features, models)
+│   ├── cookie_eaters/            <- Python package (importable module)
 │   ├── raw/
-│   ├── .gitignore
-│   ├── Makefile
-│   ├── pyproject.toml
-│   ├── README.md
-│   ├── requirements.txt
-│   └── setup.cfg
-├── dagger/
-│   ├── pipeline.go
+│   │   └── raw_data.csv
+│   ├── artifacts/                <- Generated outputs (models, metrics)
+│   ├── mlruns/                   <- MLflow experiment tracking
+│   └── requirements.txt
+├── dagger/                       <- Dagger orchestration layer
+│   ├── pipeline.go               <- Containerized pipeline definition
 │   ├── go.mod
 │   └── go.sum
-├── docs/
-├── notebooks/
-├── .gitignore
-├── action.yml
+├── docs/                         <- Architecture diagrams
+├── notebooks/                    <- Exploration & inference
+├── action.yml                    <- Custom GitHub Action
 └── README.md
 ```
