@@ -17,28 +17,20 @@ func main() {
 	}
 	defer client.Close()
 
-	//Get absolute path to project root
-	absPath, err := filepath.Abs("../") //from dagger folder we directs to the project root
+	// Get absolute path to project root
+	absPath, err := filepath.Abs("../") // relative to dagger/ folder
 	if err != nil {
 		panic(err)
 	}
 
-	//Mount project root
-	src := client.Host().Directory(absPath) //take the directory from my computer and make it available to the container
+	// Mount project root
+	src := client.Host().Directory(absPath)
 
 	python := client.Container().
 		From("python:3.11-slim").
-		WithMountedDirectory("/app", src). //this is where the container stores the directory
-		WithWorkdir("/app").
-		WithExec([]string{
-			"pip", "install",
-			"--default-timeout=1000",
-			"--no-cache-dir",
-			"-r", "cookie_eaters/requirements.txt", //we install all necessary libaries listed in the requirements.txt
-		}).
-		WithExec([]string{"pip", "install", "dvc"}). //we instal dvc
-		WithExec([]string{"dvc", "pull"}).           //we dvc pull the data from the repo root
-		WithWorkdir("/app/cookie_eaters")            //now we change directory to cookie_eaters containing our .py files
+		WithMountedDirectory("/app", src).
+		WithWorkdir("/app/cookie_eaters").
+		WithExec([]string{"pip", "install", "--default-timeout=1000", "--no-cache-dir", "-r", "requirements.txt"})
 
 	steps := []string{
 		"python -m code.data.B_setup_data",

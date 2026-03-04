@@ -1,41 +1,19 @@
 # Cookie Eaters - MLOps and Software Engineering Project
 
+Amina Lykke Said & Patricia Nita
+
+Repo: https://github.com/patrinita/itu-sdse-project
+
 ## Project overview
-This is our MLOps project for the 'Data Science in Production: MLOps and Software Engineering' course at the IT-University of Copenhagen. We have implemented a ML pipeline that runs inside containers using Dagger to ensure reproducibility across machines.
+This project implements an end-to-end, reproducible ML pipeline that:
+- prepares raw data
+- trains and evaluates ML models
+- tracks experiments with MLflow
+- produces a versioned model artifact
 
-## Reproducibility
-
-Why This Is Reproducible:
-- Dependencies are specified in `requirements.txt`
-- The pipeline is fully defined in `dagger/pipeline.go`
-- Execution environment is containerized (with Docker)
-
-## How to run the workflow
-
-### Option 1: GitHub Actions(CI workflow)
-GitHub Actions automatically validates reproducibility on every push and pull request to `main`. This ensures the pipeline executes successfully in a clean environment and produces deterministic outputs.Following is the Github Actions Continuous Integration (CI) workflow:
-
-1. Checks out the repository
-2. Sets up Go (version from dagger/go.mod)
-3. Runs Dagger inside Docker
-4. Executes the full pipeline
-5. Exports the trained model artifact
-6. Runs an external model validation action
-
-Go to Github repo and navigate to Actions tab, select the workflow and main branch, then tab run workflow.
-
-### Option 2: Locally 
-In order to run locally, you want to make sure to have the following installed:
-
-1. Python (3.13.3)
-2. Go (1.24.0) - specified in `dagger/go.mod`
-3. Dagger CLI (v0.18.16)
-4. Docker Engine - required for the pipeline to run in containers
-
-Note: you must have the Docker Engine open and runnning to execute the Dagger pipeline locally
-
-Running these commands on any machine will reproduce the full training pipeline and generate identical artifacts:
-
+The pipeline runs inside containers using Dagger to ensure reproducibility across machines.
+---
+## Quick start
 ```bash
 git clone https://github.com/patrinita/itu-sdse-project.git
 cd itu-sdse-project/dagger
@@ -46,14 +24,45 @@ Generated artifacts will appear in:
 ```bash
 cookie_eaters/artifacts/
 ```
-The pipeline reads `raw_data.csv`, performs preprocessing, trains models, tracks results with MLflow and saves artifacts.
+---
+## Reproducibility
+This project is fully reproducible. The entire ML pipeline runs inside a Docker container orchestrated by Dagger. No local Python setup is required.
 
+Prerequisites
+- Docker Desktop (running)
+- Go (version specified in `dagger/go.mod`)
+- Dagger CLI
+
+Why This Is Reproducible:
+- Execution environment is containerized (Docker)
+- Python version is fixed via `python:3.11-slim`
+- Dependencies are pinned in `requirements.txt`
+- The pipeline is fully defined as code in `dagger/pipeline.go`
+- No manual setup or local Python installation is required.
+
+Running the Quick Start commands on any machine with Docker installed will reproduce the full training pipeline and generate identical artifacts.
+---
+## Continuous Integration (CI)
+GitHub Actions automatically validates reproducibility on every push and pull request to `main`.
+The CI workflow:
+1. Checks out the repository
+2. Sets up Go (version from dagger/go.mod)
+3. Runs Dagger inside Docker
+4. Executes the full pipeline
+5. Exports the trained model artifact
+6. Runs an external model validation action
+
+This ensures the pipeline executes successfully in a clean environment and produces deterministic outputs.
+---
+## Pipeline overview
+The pipeline reads `raw_data.csv`, performs preprocessing, trains models, tracks results with MLflow and saves artifacts.
+---
 ## Project organization
-The following structure highlights the main architectural components of the repository initiated with CCDS and redesigned to our project needs:
+The following structure highlights the main architectural components of the repository and how responsibilities are separated across data versioning, ML logic, orchestration, and CI:
 
 ```
 itu-sdse-project/
-├── .dvc/                         <- data versioning
+├── .dvc/                         <- DVC data versioning metadata
 ├── .github/workflows/            <- CI workflow (GitHub Actions)
 ├── cookie_eaters/                <- Python ML project
 │   ├── code/                     <- Pipeline step implementations (data, features, models)
@@ -64,8 +73,11 @@ itu-sdse-project/
 │   ├── mlruns/                   <- MLflow experiment tracking
 │   └── requirements.txt
 ├── dagger/                       <- Dagger orchestration layer
-    ├── pipeline.go               <- Containerized pipeline definition
-    ├── go.mod                    <- Go dependencies 
-    └── go.sum                    <- Go dependency integrity (verifies dependencies installed)
-
+│   ├── pipeline.go               <- Containerized pipeline definition
+│   ├── go.mod
+│   └── go.sum
+├── docs/                         <- Architecture diagrams
+├── notebooks/                    <- Exploration & inference
+├── action.yml                    <- Custom GitHub Action
+└── README.md
 ```
