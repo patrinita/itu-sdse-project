@@ -10,37 +10,44 @@ jobs:
   dagger-pipeline:
     runs-on: ubuntu-latest
 
-    steps:
+    steps: 
+      
+      #clones the repository
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v3 
 
+      #installs Go
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
           go-version-file: dagger/go.mod
           cache-dependency-path: dagger/go.sum
 
+      #installs Dagger
       - name: Set up Dagger
         uses: dagger/dagger-for-github@v7
         with:
           version: "0.19.8"
 
+      #runs the pipeline
       - name: Run Dagger Pipeline
         run: |
           cd dagger
-          go mod download
           dagger run go run pipeline.go
 
+      #copies the trained model into a model folder (if it does not already exists)
       - name: Prepare model for validator
         run: |
           mkdir -p model
           cp cookie_eaters/artifacts/lead_model_lr.pkl model/model.pkl
 
+        #uploads the  mdodel
       - name: Upload Model Artifact
         uses: actions/upload-artifact@v4
         with:
           name: model
           path: model/model.pkl
 
+        #validates the model
       - name: Run Model Inference Test Action
         uses: lasselundstenjensen/itu-sdse-project-model-validator@main
