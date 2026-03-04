@@ -53,7 +53,7 @@ The CI workflow:
 5. Exports the trained model artifact
 6. Runs an external model validation action
 
-### This ensures the pipeline executes successfully in a clean environment and produces the expected model artifact for validation.
+#### This ensures the pipeline executes successfully in a clean environment and produces the expected model artifact for validation.
 
 ## Pipeline overview
 #### The pipeline reads `raw_data.csv`, performs preprocessing, trains models, tracks results with MLflow and saves artifacts.
