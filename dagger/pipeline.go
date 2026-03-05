@@ -18,17 +18,19 @@ func main() {
 	defer client.Close()
 
 	// Get absolute path to project root
-	absPath, err := filepath.Abs("../") // relative to dagger/ folder
+	absPath, err := filepath.Abs("../") //from dagger folder we directs to the project root
 	if err != nil {
 		panic(err)
 	}
 
 	// Mount project root
-	src := client.Host().Directory(absPath)
+	src := client.Host().Directory(absPath) //take the directory from my computer and make it available to the container
 
 	python := client.Container().
 		From("python:3.11-slim").
-		WithMountedDirectory("/app", src).
+		WithMountedDirectory("/app", src). //this is where the container stores the directory
+
+		//we install all necessary libaries listed in the requirements.txt
 		WithWorkdir("/app/cookie_eaters").
 		WithExec([]string{"pip", "install", "--default-timeout=1000", "--no-cache-dir", "-r", "requirements.txt"})
 

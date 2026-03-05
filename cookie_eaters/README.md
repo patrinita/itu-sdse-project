@@ -5,11 +5,12 @@ Amina Lykke Said & Patricia Nita
 Repo: https://github.com/patrinita/itu-sdse-project
 
 ## Project overview
-This project implements an end-to-end, reproducible ML pipeline that:
-- prepares raw data
-- trains and evaluates ML models
-- tracks experiments with MLflow
-- produces a model artifact (`model.pkl`) via CI
+This is our project for the 'Data Science in Production: MLOps and Software Engineering' course at the IT-University of Copenhagen. We have implemented an end-to-end, reproducible ML pipeline that:
+
+    1. prepares raw data
+    2. trains and evaluates ML models
+    3. tracks experiments with MLflow
+    4. produces a model artifact (`model.pkl`) via CI
 
 #### The pipeline runs inside containers using Dagger to ensure reproducibility across machines.
 
@@ -29,12 +30,12 @@ cookie_eaters/artifacts/
 This project is fully reproducible. The entire ML pipeline runs inside a Docker container orchestrated by Dagger. No local Python setup is required. 
 The raw dataset is versioned in Git at `cookie_eaters/raw/raw_data.csv`. DVC is initialized in the repository but not used by the current pipeline.
 
-Prerequisites
+### Prerequisites
 - Docker Desktop (running)
 - Go (version specified in `dagger/go.mod`)
 - Dagger CLI
 
-Why this is reproducible:
+### Why this is reproducible:
 - Execution environment is containerized (Docker)
 - Python version is fixed via `python:3.11-slim`
 - Dependencies are pinned in `requirements.txt`
